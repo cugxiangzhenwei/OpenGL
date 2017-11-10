@@ -4,6 +4,8 @@
 // GLFW
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <fstream>
+#include <strstream>
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
@@ -19,45 +21,45 @@ GLfloat vertices[] = {
 GLchar * vertexShaderSource = NULL;
 GLchar * fragmentShaderSource = NULL;
 
-GLchar * GetShaderString(const char * pzFile)
+GLchar * GetShaderString(const char * pszFile)
 {
-	FILE *pFile = NULL;
-	fopen_s(&pFile,pzFile, "r");
-	if (pFile == NULL)
+	std::ifstream in(pszFile);
+	if (!in.is_open())
 	{
-		fputs("File error", stderr);
-		exit(1);
+		std::cout << "Failed to Load Shader file"<< pszFile;
+		return NULL;
 	}
+	std::istreambuf_iterator<char> beg(in), end;
+	std::string str(beg, end);
+	int ilen = str.length()+1;
+	GLchar * pStr = (GLchar*)(malloc(ilen*sizeof(GLchar)));
+	strcpy_s(pStr, ilen * sizeof(GLchar),str.c_str());
+	in.close();
+	return pStr;
+}
+GLuint ShaderComplier(GLenum ShaderType,const char * pszShaderFile)
+{
+	GLuint Shader;
+	Shader = glCreateShader(ShaderType);
+	GLchar * pStrContent = GetShaderString(pszShaderFile);
+	if (pStrContent == NULL)
+		return -1;
 
-	/* 获取文件大小 */
-	fseek(pFile, 0, SEEK_END);
-	int lSize = ftell(pFile);
-	rewind(pFile);
-
-	/* 分配内存存储整个文件 */
-	GLchar *buffer = (char*)malloc(sizeof(char)*lSize);
-	if (buffer == NULL)
+	glShaderSource(Shader, 1, &pStrContent, NULL);
+	glCompileShader(Shader);
+	free(pStrContent);
+	GLint success;
+	GLchar infoLog[512];
+	glGetShaderiv(Shader, GL_COMPILE_STATUS, &success);
+	if (!success)
 	{
-		fputs("Memory error", stderr);
-		exit(2);
+		glGetShaderInfoLog(Shader, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
-
-	/* 将文件拷贝到buffer中 */
-	int result = fread(buffer, 1, lSize, pFile);
-	if (result <=0)
-	{
-		fputs("Reading error", stderr);
-		exit(3);
-	}
-	buffer[result] = '\0';
-	fclose(pFile);
-	pFile = NULL;
-	return buffer;
+	return Shader;
 }
 int main()
 {
-	vertexShaderSource = GetShaderString("vet.shf");
-	fragmentShaderSource = GetShaderString("frm.shf");
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -90,40 +92,20 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-	GLuint vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	GLint success;
-	GLchar infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	GLuint fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
+	GLuint vertexShader = ShaderComplier(GL_VERTEX_SHADER,"vet.shf");
+	GLuint fragmentShader = ShaderComplier(GL_FRAGMENT_SHADER,"frm.shf");
 
 	GLuint shaderProgram;
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
+
+	GLint success = 0;
 	glLinkProgram(shaderProgram);
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 	if (!success)
 	{
+		GLchar infoLog[512];
 		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR::LINK shaderProgam\n" << infoLog << std::endl;
 	}
@@ -131,11 +113,13 @@ int main()
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
-	GLuint VAO;
-	glGenVertexArrays(1, &VAO);
+	#define vao_count (5)
+
+	GLuint VAO[vao_count];
+	glGenVertexArrays(5, VAO);
 	// ..:: 初始化代码（只运行一次 (除非你的物体频繁改变)） :: ..
 	// 1. 绑定VAO
-	glBindVertexArray(VAO);
+	glBindVertexArray(VAO[0]);
 	// 2. 把顶点数组复制到缓冲中供OpenGL使用
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -149,7 +133,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT); //状态应用函数
 
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
+		glBindVertexArray(VAO[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0); //4. 解绑VAO
 		glfwSwapBuffers(window);
