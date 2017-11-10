@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TestTriangle-4EBO.cpp" />
     <ClCompile Include="TestTriangle.cpp" />
   </ItemGroup>
   <ItemGroup>

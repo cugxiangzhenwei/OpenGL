@@ -18,6 +18,9 @@
     <ClCompile Include="TestTriangle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TestTriangle-4EBO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vet.shf" />
