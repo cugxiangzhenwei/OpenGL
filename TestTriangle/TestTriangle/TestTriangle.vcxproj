@@ -152,10 +152,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TestTriangle-3arry.cpp" />
     <ClCompile Include="TestTriangle-4EBO.cpp" />
+    <ClCompile Include="TestTriangle-ColorTriangle.cpp" />
     <ClCompile Include="TestTriangle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="basic.frag" />
+    <None Include="basic.vert" />
     <None Include="frm.shf" />
     <None Include="vet.shf" />
   </ItemGroup>
