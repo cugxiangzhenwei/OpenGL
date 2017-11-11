@@ -29,9 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vet.shf" />
-    <None Include="frm.shf" />
-    <None Include="basic.vert" />
-    <None Include="basic.frag" />
+    <None Include="shader.vs" />
+    <None Include="shader.frag" />
   </ItemGroup>
 </Project>

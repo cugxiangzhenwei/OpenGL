@@ -92,8 +92,8 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-	GLuint vertexShader = ShaderComplier(GL_VERTEX_SHADER,"vet.shf");
-	GLuint fragmentShader = ShaderComplier(GL_FRAGMENT_SHADER,"frm.shf");
+	GLuint vertexShader = ShaderComplier(GL_VERTEX_SHADER,"shader.vs");
+	GLuint fragmentShader = ShaderComplier(GL_FRAGMENT_SHADER,"shader.frag");
 
 	GLuint shaderProgram;
 	shaderProgram = glCreateProgram();

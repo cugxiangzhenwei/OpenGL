@@ -158,10 +158,8 @@
     <ClCompile Include="TestTriangle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.frag" />
-    <None Include="basic.vert" />
-    <None Include="frm.shf" />
-    <None Include="vet.shf" />
+    <None Include="shader.frag" />
+    <None Include="shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
