@@ -7,12 +7,25 @@
 #include <fstream>
 #include <strstream>
 #include <SOIL.h>
+static float g_fV = 0.5;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
 	// 关闭应用程序
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	else if(key == GLFW_KEY_UP && action == GLFW_PRESS)
+	{
+		g_fV += 0.1;
+		if (g_fV > 1.0)
+			g_fV = 1.0;
+	}
+	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	{
+		g_fV -= 0.1;
+		if (g_fV < 0.0)
+			g_fV = 0.0;
+	}
 }
 GLfloat vertices[] = {
 	//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
@@ -197,6 +210,9 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glUniform1i(glGetUniformLocation(shaderProgram, "ourTexture2"), 1); //给纹理采样器分配一个位置值，这样的话我们能够在一个片段着色器中设置多个纹理
 
+
+		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "imgf");
+		glUniform2f(vertexColorLocation, g_fV,1.0);
 
 		glBindVertexArray(VAO[0]);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
