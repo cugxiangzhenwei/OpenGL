@@ -14,9 +14,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 GLfloat vertices[] = {
-	-5.0f, -5.0f, 0.0f,
-	5.0f, -5.0f, 0.0f,
-	0.0f,  5.0f, 0.0f
+	-0.5f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	0.0f,  0.5f, 0.0f
 };
 GLchar * vertexShaderSource = NULL;
 GLchar * fragmentShaderSource = NULL;
