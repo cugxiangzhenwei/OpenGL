@@ -133,6 +133,15 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT); //状态应用函数
 
 		glUseProgram(shaderProgram);
+		// 更新uniform颜色
+		GLfloat timeValue = glfwGetTime();
+		GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+		GLfloat RedValue = (sin(timeValue) / 5) + 0.75;
+		GLfloat BlueVlaue = fabs(cos(timeValue));
+
+		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+		glUniform4f(vertexColorLocation, RedValue, greenValue, BlueVlaue, 1.0f);
+
 		glBindVertexArray(VAO[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0); //4. 解绑VAO
