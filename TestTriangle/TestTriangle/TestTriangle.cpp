@@ -126,13 +126,18 @@ int main()
 	// 3. 设置顶点属性指针
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+
+	GLint vertextPosOffetLocation = glGetUniformLocation(shaderProgram, "posOffset");
+	glUseProgram(shaderProgram);
+	glUniform3f(vertextPosOffetLocation, -5.0f, 0.0, 0.0);
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		glClearColor(0.2f,0.3f, 0.3f, 1.0f); // 状态设置函数
 		glClear(GL_COLOR_BUFFER_BIT); //状态应用函数
-
-		glUseProgram(shaderProgram);
+	
 		// 更新uniform颜色
 		GLfloat timeValue = glfwGetTime();
 		GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
