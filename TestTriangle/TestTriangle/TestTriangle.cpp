@@ -7,7 +7,14 @@
 #include <fstream>
 #include <strstream>
 #include <SOIL.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 static float g_fV = 0.5;
+#define  M_PI  3.1415926
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
@@ -114,8 +121,8 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-	GLuint vertexShader = ShaderComplier(GL_VERTEX_SHADER,"shader.vs");
-	GLuint fragmentShader = ShaderComplier(GL_FRAGMENT_SHADER,"shader.frag");
+	GLuint vertexShader = ShaderComplier(GL_VERTEX_SHADER, "shader.vs");
+	GLuint fragmentShader = ShaderComplier(GL_FRAGMENT_SHADER, "shader.frag");
 
 	GLuint shaderProgram;
 	shaderProgram = glCreateProgram();
@@ -137,7 +144,7 @@ int main()
 
 	glUseProgram(shaderProgram);
 
-	#define vao_count (5)
+#define vao_count (5)
 
 	GLuint VAO[vao_count];
 	glGenVertexArrays(5, VAO);
@@ -190,7 +197,14 @@ int main()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	
+	{
+		glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+		glm::mat4 trans;
+		trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+		vec = trans * vec;
+		std::cout << vec.x << vec.y << vec.z << std::endl;
+	}
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
@@ -213,6 +227,19 @@ int main()
 
 		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "imgf");
 		glUniform2f(vertexColorLocation, g_fV,1.0);
+
+		//glm::mat4 trans;
+		//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+		//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+		
+		glm::mat4 trans;
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		float fAngle = glm::radians((GLfloat)glfwGetTime() * 50.0f);
+		trans = glm::rotate(trans, fAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+		GLint transFormLoc = glGetUniformLocation(shaderProgram, "transform");
+		glUniformMatrix4fv(transFormLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 		glBindVertexArray(VAO[0]);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);

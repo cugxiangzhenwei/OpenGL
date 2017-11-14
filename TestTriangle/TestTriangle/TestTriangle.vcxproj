@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGlStudy\3rdpart\glew\include;C:\OpenGlStudy\3rdpart\glfw\include;C:\OpenGlStudy\3rdpart\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenGlStudy\3rdpart\glew\include;C:\OpenGlStudy\3rdpart\glfw\include;C:\OpenGlStudy\3rdpart\soil\include;C:\OpenGlStudy\3rdpart\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +122,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGlStudy\3rdpart\glew\include;C:\OpenGlStudy\3rdpart\glfw\include;C:\OpenGlStudy\3rdpart\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenGlStudy\3rdpart\glew\include;C:\OpenGlStudy\3rdpart\glfw\include;C:\OpenGlStudy\3rdpart\soil\include;C:\OpenGlStudy\3rdpart\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
