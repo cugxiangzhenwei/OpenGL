@@ -87,6 +87,56 @@ GLuint ShaderComplier(GLenum ShaderType,const char * pszShaderFile)
 	}
 	return Shader;
 }
+typedef enum 
+{
+	POS_LEFT_TOP,
+	POS_RIGHT_TOP,
+	POS_RIGHT_BOTTOM,
+	POS_LEFT_BOTTOM
+}ENUM_PIC_POS;
+
+void DrawImage(ENUM_PIC_POS pos, GLuint shaderProgram,GLuint vao)
+{
+	// 都往中间旋转
+	glm::mat4 trans;
+	float fx = 0.0;
+	float fy = 0.0;
+	float fAngle = glm::radians((GLfloat)glfwGetTime() * 50.0f);;
+	if (pos == POS_LEFT_TOP)
+	{
+		fx = -0.5f;
+		fy = 0.5f;
+		fAngle = -1.0f*fAngle;
+	}
+	else if (pos == POS_RIGHT_TOP)
+	{
+		fx = 0.5f;
+		fy = 0.5f;
+		fAngle = 1.0f*fAngle;
+	}
+	else if (pos == POS_RIGHT_BOTTOM)
+	{
+		fx = 0.5f;
+		fy = -0.5f;
+		fAngle = 1.0f*fAngle;
+	}
+	else if (pos == POS_LEFT_BOTTOM)
+	{
+		fx = -0.5f;
+		fy = -0.5f;
+		fAngle = -1.0f*fAngle;
+	}
+	trans = glm::translate(trans, glm::vec3(fx, fy, 0.0f));
+	trans = glm::rotate(trans, fAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+	GLint transFormLoc = glGetUniformLocation(shaderProgram, "transform");
+	glUniformMatrix4fv(transFormLoc, 1, GL_FALSE, glm::value_ptr(trans));
+	glBindVertexArray(vao);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0); //4. 解绑VAO
+}
 int main()
 {
 	glfwInit();
@@ -228,23 +278,11 @@ int main()
 		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "imgf");
 		glUniform2f(vertexColorLocation, g_fV,1.0);
 
-		//glm::mat4 trans;
-		//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-		//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-		
-		glm::mat4 trans;
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		float fAngle = glm::radians((GLfloat)glfwGetTime() * 50.0f);
-		trans = glm::rotate(trans, fAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+		DrawImage(POS_LEFT_TOP, shaderProgram,VAO[0]);
+		DrawImage(POS_RIGHT_TOP, shaderProgram, VAO[0]);
+		DrawImage(POS_RIGHT_BOTTOM, shaderProgram, VAO[0]);
+		DrawImage(POS_LEFT_BOTTOM, shaderProgram, VAO[0]);
 
-		GLint transFormLoc = glGetUniformLocation(shaderProgram, "transform");
-		glUniformMatrix4fv(transFormLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-		glBindVertexArray(VAO[0]);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0); //4. 解绑VAO
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
