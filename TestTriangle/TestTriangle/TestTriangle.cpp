@@ -278,6 +278,34 @@ int main()
 		DrawImage(POS_RIGHT_BOTTOM, shaderProgram, VAO[0]);
 		DrawImage(POS_LEFT_BOTTOM, shaderProgram, VAO[0]);
 
+
+
+		//旋转
+		glm::mat4 model;
+		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
+		glm::mat4 view;
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+		//透视投影
+		glm::mat4 projection;
+		projection = glm::perspective(glm::radians(45.0f), width*1.0f / height, 0.1f, 100.0f);
+
+		GLint modelFormLoc = glGetUniformLocation(shaderProgram, "model");
+		glUniformMatrix4fv(modelFormLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		GLint uniFormLoc = glGetUniformLocation(shaderProgram, "view");
+		glUniformMatrix4fv(uniFormLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		GLint projectionFormLoc = glGetUniformLocation(shaderProgram, "projection");
+		glUniformMatrix4fv(projectionFormLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+		glBindVertexArray(VAO[0]);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0); //4. 解绑VAO
+
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
