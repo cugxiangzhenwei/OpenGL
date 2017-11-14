@@ -34,22 +34,56 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			g_fV = 0.0;
 	}
 }
-GLfloat vertices[] = {
-	//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-	0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-	0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+GLfloat vertices[] =
+ {
+   // Front face
+	- 1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
+	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
+	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
+	1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
+	
+	 // Right face
+	 1.0f, 1.0f, 1.0f,		1.0f,1.0f,
+	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
+	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
+	
+	 // Back face
+	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
+	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 -1.0f, 1.0f, -1.0f,	0.0f,1.0f,
+	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f,
+	 -1.0f, 1.0f, -1.0f,	0.0f,1.0f,
+	
+	 // Left face
+	- 1.0f, 1.0f, -1.0f,	0.0f,1.0f,
+	-1.0f, -1.0f, -1.0f,	0.0f,0.0f,
+	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	-1.0f, -1.0f, -1.0f,	0.0f,0.0f,
+	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
+	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	
+	                // Top face
+	-1.0f, 1.0f, -1.0f,		0.0f,1.0f,
+	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	1.0f, 1.0f, -1.0f,		1.0f,1.0f
+	- 1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	 1.0f, 1.0f, 1.0f,		1.0f,1.0f,
+	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
+	
+	// Bottom face
+	1.0f, -1.0f, -1.0f,		1.0f,0.0f,
+	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f,
+	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	 -1.0f, -1.0f, 1.0f,	0.0f,0.0f,
+	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f
 };
-
-GLuint indices[] = { // 注意索引从0开始! 
-	0, 1, 3, // 第一个三角形
-	1, 2, 3  // 第二个三角形
-};
-
-GLchar * vertexShaderSource = NULL;
-GLchar * fragmentShaderSource = NULL;
-
 GLchar * GetShaderString(const char * pszFile)
 {
 	std::ifstream in(pszFile);
@@ -200,12 +234,6 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// EBO索引数据读取
-	GLuint EBO;
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
 	GLuint texture1;
 	glGenTextures(1, &texture1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
@@ -231,30 +259,19 @@ int main()
 	SOIL_free_image_data(image2);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-
 	// 3. 设置顶点属性指针
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	{
-		glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-		glm::mat4 trans;
-		trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-		vec = trans * vec;
-		std::cout << vec.x << vec.y << vec.z << std::endl;
-	}
-
+	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		glClearColor(0.2f,0.3f, 0.3f, 1.0f); // 状态设置函数
-		glClear(GL_COLOR_BUFFER_BIT); //状态应用函数
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0); //在绑定纹理之前先激活纹理单元
 		glBindTexture(GL_TEXTURE_2D, texture1);
@@ -273,16 +290,11 @@ int main()
 		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "imgf");
 		glUniform2f(vertexColorLocation, g_fV,1.0);
 
-		DrawImage(POS_LEFT_TOP, shaderProgram,VAO[0]);
-		DrawImage(POS_RIGHT_TOP, shaderProgram, VAO[0]);
-		DrawImage(POS_RIGHT_BOTTOM, shaderProgram, VAO[0]);
-		DrawImage(POS_LEFT_BOTTOM, shaderProgram, VAO[0]);
-
-
 
 		//旋转
 		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
 		glm::mat4 view;
@@ -302,8 +314,8 @@ int main()
 		glUniformMatrix4fv(projectionFormLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glBindVertexArray(VAO[0]);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 16, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES,0,12);
 		glBindVertexArray(0); //4. 解绑VAO
 
 		glfwSwapBuffers(window);
