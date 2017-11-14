@@ -97,38 +97,33 @@ typedef enum
 
 void DrawImage(ENUM_PIC_POS pos, GLuint shaderProgram,GLuint vao)
 {
-	// 都往中间旋转
+	// 随着时间放到缩小
 	glm::mat4 trans;
 	float fx = 0.0;
 	float fy = 0.0;
-	float fAngle = glm::radians((GLfloat)glfwGetTime() * 50.0f);;
+	float fScale = sin((GLfloat)glfwGetTime());
 	if (pos == POS_LEFT_TOP)
 	{
 		fx = -0.5f;
 		fy = 0.5f;
-		fAngle = -1.0f*fAngle;
 	}
 	else if (pos == POS_RIGHT_TOP)
 	{
 		fx = 0.5f;
 		fy = 0.5f;
-		fAngle = 1.0f*fAngle;
 	}
 	else if (pos == POS_RIGHT_BOTTOM)
 	{
 		fx = 0.5f;
 		fy = -0.5f;
-		fAngle = 1.0f*fAngle;
 	}
 	else if (pos == POS_LEFT_BOTTOM)
 	{
 		fx = -0.5f;
 		fy = -0.5f;
-		fAngle = -1.0f*fAngle;
 	}
 	trans = glm::translate(trans, glm::vec3(fx, fy, 0.0f));
-	trans = glm::rotate(trans, fAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+	trans = glm::scale(trans, glm::vec3(fScale, fScale, fScale));
 
 	GLint transFormLoc = glGetUniformLocation(shaderProgram, "transform");
 	glUniformMatrix4fv(transFormLoc, 1, GL_FALSE, glm::value_ptr(trans));
