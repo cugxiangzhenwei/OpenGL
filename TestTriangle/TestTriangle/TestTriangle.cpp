@@ -36,8 +36,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 GLfloat vertices[] =
  {
-   // Front face
-	- 1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+   // Top face
+	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
 	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
 	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
 	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
@@ -52,37 +52,37 @@ GLfloat vertices[] =
 	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
 	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
 	
-	 // Back face
-	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
-	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 // Bottom face
+	 -1.0f, 1.0f, -1.0f,	1.0f,1.0f,
+	 -1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 1.0f, 1.0f, -1.0f,		0.0f,1.0f,
+	 -1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 1.0f, -1.0f, -1.0f,	0.0f,0.0f,
+	 1.0f, 1.0f, -1.0f,		0.0f,1.0f,
+	
+	 // Left face
+	 -1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	 -1.0f, -1.0f, 1.0f,	0.0f,0.0f,
 	 -1.0f, 1.0f, -1.0f,	0.0f,1.0f,
-	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	 -1.0f, -1.0f, 1.0f,	0.0f,0.0f,
 	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f,
 	 -1.0f, 1.0f, -1.0f,	0.0f,1.0f,
 	
-	 // Left face
-	- 1.0f, 1.0f, -1.0f,	0.0f,1.0f,
-	-1.0f, -1.0f, -1.0f,	0.0f,0.0f,
-	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	-1.0f, -1.0f, -1.0f,	0.0f,0.0f,
-	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
-	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	
-	                // Top face
+	 // Back face
 	-1.0f, 1.0f, -1.0f,		0.0f,1.0f,
 	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
 	1.0f, 1.0f, -1.0f,		1.0f,1.0f
-	- 1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	 1.0f, 1.0f, 1.0f,		1.0f,1.0f,
-	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
+	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
+	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
+	1.0f, 1.0f, -1.0f,		1.0f,1.0f,
 	
-	// Bottom face
-	1.0f, -1.0f, -1.0f,		1.0f,0.0f,
-	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f,
-	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	 -1.0f, -1.0f, 1.0f,	0.0f,0.0f,
-	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f
+	// Front face
+	-1.0f, -1.0f, -1.0f,	1.0f,0.0f,
+	-1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	1.0f,  -1.0f, -1.0f,	0.0f,0.0f,
+	-1.0f, -1.0f, 1.0f,		1.0f,0.0f,
+	1.0f,  -1.0f, 1.0f,		0.0f,0.0f,
+	1.0f,  -1.0f, -1.0f,	0.0f,0.0f
 };
 GLchar * GetShaderString(const char * pszFile)
 {
@@ -266,6 +266,8 @@ int main()
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
@@ -290,11 +292,10 @@ int main()
 		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "imgf");
 		glUniform2f(vertexColorLocation, g_fV,1.0);
 
-
 		//旋转
 		glm::mat4 model;
-		//model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(-25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
 		glm::mat4 view;
@@ -315,7 +316,8 @@ int main()
 
 		glBindVertexArray(VAO[0]);
 		//glDrawElements(GL_TRIANGLES, 16, GL_UNSIGNED_INT, 0);
-		glDrawArrays(GL_TRIANGLES,0,12);
+		glDrawArrays(GL_TRIANGLES,0,36);
+		
 		glBindVertexArray(0); //4. 解绑VAO
 
 		glfwSwapBuffers(window);
