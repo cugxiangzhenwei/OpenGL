@@ -120,19 +120,20 @@ GLfloat texture_coord[] =
 	1.0f,1.0f,
 
 
-	0.0f,1.0f,
-	0.0f,1.0f,
-	1.0f,1.0f,
-	0.0f,1.0f,
-	1.0f,1.0f,
-	1.0f,1.0f,
-
-
-	1.0f,0.0f,
-	1.0f,0.0f,
+	// Top face
 	0.0f,0.0f,
+	0.0f,1.0f,
 	1.0f,0.0f,
+	0.0f,1.0f,
+	1.0f,1.0f,
+	1.0f,0.0f,
+
+	// Bottom face
+	0.0f,1.0f,
+	1.0f,1.0f,
 	0.0f,0.0f,
+	1.0f,1.0f,
+	0.0f,1.0f,
 	0.0f,0.0f
 };
 GLchar * GetShaderString(const char * pszFile)
@@ -353,7 +354,7 @@ int main()
 
 		//旋转
 		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(-25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
