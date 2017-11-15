@@ -13,6 +13,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 static float g_fV = 0.5;
+static float g_fAnle = 25.0;
 #define  M_PI  3.1415926
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -23,15 +24,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	else if(key == GLFW_KEY_UP && action == GLFW_PRESS)
 	{
-		g_fV += 0.1;
-		if (g_fV > 1.0)
-			g_fV = 1.0;
+		g_fAnle += 5.0; //一次调整5度
+		if (g_fAnle > 360.0)
+			g_fAnle = 360.0;
 	}
 	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	{
+		g_fAnle -= 5.0; //一次调整5度
+		if (g_fAnle < -360.0)
+			g_fAnle = -360.0;
+	}
+	else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+	{
+		g_fV += 0.1;
+		if (g_fV > 1.0)
+		{
+			g_fV = 1.0;
+		}
+	}
+	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
 		g_fV -= 0.1;
 		if (g_fV < 0.0)
 			g_fV = 0.0;
+	}
+}
+void mouse_event_callback(GLFWwindow* window, int button, int action, int modifierKey)
+{
+	if (button == 0)
+	{
+		int a = 0;
 	}
 }
 GLfloat vertices[] =
@@ -243,6 +265,7 @@ int main()
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouse_event_callback);
 
 
 	// 0. 复制顶点数组到缓冲中供OpenGL使用
@@ -354,7 +377,7 @@ int main()
 
 		//旋转
 		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(-25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(g_fAnle), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
