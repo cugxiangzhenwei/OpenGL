@@ -13,12 +13,12 @@ uniform mat4 projection;
 void main()
 {
    // gl_Position = vec4(position, 1.0f);
-   // gl_Position = transform * vec4(position, 1.0f);
+   // gl_Position = transform * vec4(position, 2.0f);
     // 注意乘法要从右向左读
-    gl_Position = projection * view * model * vec4(position, 2.0f);
+    gl_Position = projection * view * model * vec4(position, 3.0f);
 
     ourColor = color;
    // TexCoord = texCoord;
    //TexCoord = vec2(texCoord.x, 1.0f - texCoord.y);
-   TexCoord = vec2(1.0 - texCoord.x, 1.0f - texCoord.y);
+   TexCoord = vec2(texCoord.x, 1.0f - texCoord.y);
 }
