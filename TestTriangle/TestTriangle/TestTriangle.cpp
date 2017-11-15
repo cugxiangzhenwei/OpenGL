@@ -240,6 +240,11 @@ void DrawImage(ENUM_PIC_POS pos, GLuint shaderProgram,GLuint vao)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0); //4. 解绑VAO
 }
+void SetShaderMat(GLuint shaderProgram,const GLchar * matName,const glm::mat4 & mat)
+{
+	GLint matlFormLoc = glGetUniformLocation(shaderProgram, matName);
+	glUniformMatrix4fv(matlFormLoc, 1, GL_FALSE, glm::value_ptr(mat));
+}
 int main()
 {
 	glfwInit();
@@ -355,6 +360,20 @@ int main()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);//规定逆序为正面
+
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
@@ -378,10 +397,10 @@ int main()
 		GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "imgf");
 		glUniform2f(vertexColorLocation, g_fV,1.0);
 
-		//旋转
-		glm::mat4 model;
+		////旋转
+	/*	glm::mat4 model;
 		model = glm::rotate(model, glm::radians(g_fAnle), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));*/
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
 		glm::mat4 view;
@@ -391,21 +410,25 @@ int main()
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(45.0f), width*1.0f / height, 0.1f, 100.0f);
 
-		GLint modelFormLoc = glGetUniformLocation(shaderProgram, "model");
-		glUniformMatrix4fv(modelFormLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-		GLint uniFormLoc = glGetUniformLocation(shaderProgram, "view");
-		glUniformMatrix4fv(uniFormLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-		GLint projectionFormLoc = glGetUniformLocation(shaderProgram, "projection");
-		glUniformMatrix4fv(projectionFormLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		SetShaderMat(shaderProgram, "view",view);
+		SetShaderMat(shaderProgram, "projection", projection);
 
 		glBindVertexArray(VAO[0]);
-		//glDrawElements(GL_TRIANGLES, 16, GL_UNSIGNED_INT, 0);
-		glDrawArrays(GL_TRIANGLES,0,36);
-		
-		glBindVertexArray(0); //4. 解绑VAO
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			glm::mat4 model;
+			model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			if (i % 2 == 0)
+				model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+			SetShaderMat(shaderProgram, "model", model);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
+		glBindVertexArray(0); //4. 解绑VAO
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
