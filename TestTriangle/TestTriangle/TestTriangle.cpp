@@ -36,53 +36,102 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 GLfloat vertices[] =
  {
-   // Top face
-	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
-	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
-	-1.0f, -1.0f, 1.0f,		0.0f,0.0f,
-	1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
-	
-	 // Right face
-	 1.0f, 1.0f, 1.0f,		1.0f,1.0f,
-	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
-	 1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	 1.0f, -1.0f, -1.0f,	1.0f,0.0f,
-	 1.0f, 1.0f, -1.0f,		1.0f,1.0f,
-	
-	 // Bottom face
-	 -1.0f, 1.0f, -1.0f,	1.0f,1.0f,
-	 -1.0f, -1.0f, -1.0f,	1.0f,0.0f,
-	 1.0f, 1.0f, -1.0f,		0.0f,1.0f,
-	 -1.0f, -1.0f, -1.0f,	1.0f,0.0f,
-	 1.0f, -1.0f, -1.0f,	0.0f,0.0f,
-	 1.0f, 1.0f, -1.0f,		0.0f,1.0f,
-	
-	 // Left face
-	 -1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	 -1.0f, -1.0f, 1.0f,	0.0f,0.0f,
-	 -1.0f, 1.0f, -1.0f,	0.0f,1.0f,
-	 -1.0f, -1.0f, 1.0f,	0.0f,0.0f,
-	 -1.0f, -1.0f, -1.0f,	0.0f,0.0f,
-	 -1.0f, 1.0f, -1.0f,	0.0f,1.0f,
-	
-	 // Back face
-	-1.0f, 1.0f, -1.0f,		0.0f,1.0f,
-	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	1.0f, 1.0f, -1.0f,		1.0f,1.0f
-	-1.0f, 1.0f, 1.0f,		0.0f,1.0f,
-	1.0f, 1.0f, 1.0f,		1.0f,1.0f,
-	1.0f, 1.0f, -1.0f,		1.0f,1.0f,
-	
-	// Front face
-	-1.0f, -1.0f, -1.0f,	1.0f,0.0f,
-	-1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	1.0f,  -1.0f, -1.0f,	0.0f,0.0f,
-	-1.0f, -1.0f, 1.0f,		1.0f,0.0f,
-	1.0f,  -1.0f, 1.0f,		0.0f,0.0f,
-	1.0f,  -1.0f, -1.0f,	0.0f,0.0f
+	// Front face				
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, -1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, -1.0f, 1.0f,
+	1.0f, -1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+
+	// Right face
+	1.0f, 1.0f, 1.0f,
+	1.0f, -1.0f, 1.0f,
+	1.0f, 1.0f, -1.0f,
+	1.0f, -1.0f, 1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, 1.0f, -1.0f,
+
+	// Back face
+	1.0f, 1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	-1.0f, 1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, 1.0f, -1.0f,
+
+	// Left face
+	-1.0f, 1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+
+	// Top face
+	-1.0f, 1.0f, -1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, -1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, -1.0f,
+
+	// Bottom face
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, 1.0f,
+	-1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, 1.0f,
+	-1.0f, -1.0f, 1.0f,
+	-1.0f, -1.0f, -1.0f,    
+};
+
+GLfloat texture_coord[] =
+{
+	0.0f,1.0f,
+	0.0f,0.0f,
+	1.0f,1.0f,
+	0.0f,0.0f,
+	1.0f,0.0f,
+	1.0f,1.0f,
+
+	1.0f,1.0f,
+	1.0f,0.0f,
+	1.0f,1.0f,
+	1.0f,0.0f,
+	1.0f,0.0f,
+	1.0f,1.0f,
+
+
+	1.0f,1.0f,
+	1.0f,0.0f,
+	0.0f,1.0f,
+	1.0f,0.0f,
+	0.0f,0.0f,
+	0.0f,1.0f,
+
+
+	0.0f,1.0f,
+	0.0f,0.0f,
+	0.0f,1.0f,
+	0.0f,0.0f,
+	0.0f,0.0f,
+	0.0f,1.0f,
+
+
+	0.0f,1.0f,
+	0.0f,1.0f,
+	1.0f,1.0f,
+	0.0f,1.0f,
+	1.0f,1.0f,
+	1.0f,1.0f,
+
+
+	1.0f,0.0f,
+	1.0f,0.0f,
+	0.0f,0.0f,
+	1.0f,0.0f,
+	0.0f,0.0f,
+	0.0f,0.0f
 };
 GLchar * GetShaderString(const char * pszFile)
 {
@@ -194,10 +243,14 @@ int main()
 
 
 	// 0. 复制顶点数组到缓冲中供OpenGL使用
-	GLuint VBO;
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	GLuint VBO[5];
+	glGenBuffers(5, VBO);
+	/*glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texture_coord), texture_coord, GL_STATIC_DRAW);*/
+
 
 
 	GLuint vertexShader = ShaderComplier(GL_VERTEX_SHADER, "shader.vs");
@@ -231,7 +284,7 @@ int main()
 	// 1. 绑定VAO
 	glBindVertexArray(VAO[0]);
 	// 2. 把顶点数组复制到缓冲中供OpenGL使用
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	GLuint texture1;
@@ -260,13 +313,17 @@ int main()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// 3. 设置顶点属性指针
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texture_coord), texture_coord, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(2);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
@@ -294,7 +351,7 @@ int main()
 
 		//旋转
 		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(-25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
