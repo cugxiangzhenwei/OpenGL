@@ -87,6 +87,7 @@ GLfloat vertices[] =
 
 GLfloat texture_coord[] =
 {
+	// Front face	
 	0.0f,1.0f,
 	0.0f,0.0f,
 	1.0f,1.0f,
@@ -94,14 +95,15 @@ GLfloat texture_coord[] =
 	1.0f,0.0f,
 	1.0f,1.0f,
 
+	// Right face
 	1.0f,1.0f,
+	0.0f,1.0f,
 	1.0f,0.0f,
-	1.0f,1.0f,
+	0.0f,1.0f,
+	0.0f,0.0f,
 	1.0f,0.0f,
-	1.0f,0.0f,
-	1.0f,1.0f,
 
-
+	// Back face
 	1.0f,1.0f,
 	1.0f,0.0f,
 	0.0f,1.0f,
@@ -109,13 +111,13 @@ GLfloat texture_coord[] =
 	0.0f,0.0f,
 	0.0f,1.0f,
 
-
+	// Left face
 	0.0f,1.0f,
 	0.0f,0.0f,
-	0.0f,1.0f,
+	1.0f,1.0f,
 	0.0f,0.0f,
-	0.0f,0.0f,
 	0.0f,1.0f,
+	1.0f,1.0f,
 
 
 	0.0f,1.0f,
@@ -323,7 +325,7 @@ int main()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(2);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
@@ -352,7 +354,7 @@ int main()
 		//旋转
 		glm::mat4 model;
 		model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
 		glm::mat4 view;
