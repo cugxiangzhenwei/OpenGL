@@ -160,6 +160,7 @@
     <ClInclude Include="cubic_vertex_data.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="light.frag" />
     <None Include="shader.frag" />
     <None Include="shader.vs" />
   </ItemGroup>

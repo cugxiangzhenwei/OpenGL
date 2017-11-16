@@ -6,4 +6,5 @@
 GLchar * GetShaderString(const char * pszFile);
 GLuint ShaderComplier(GLenum ShaderType, const char * pszShaderFile);
 void SetShaderMatrix(GLuint shaderProgram, GLchar * matrixName, const glm::mat4 & mat);
+void SetShaderVec3(GLuint shaderProgram, GLchar * vec3Name, GLfloat v0, GLfloat v1, GLfloat v2);
 GLFWwindow* SetUpOpenGLWnd(const char * pszWinTitle, int iWidth, int iHeight);

@@ -43,6 +43,12 @@ void SetShaderMatrix(GLuint shaderProgram, GLchar * matrixName, const glm::mat4 
 	GLint lFormLoc = glGetUniformLocation(shaderProgram, matrixName);
 	glUniformMatrix4fv(lFormLoc, 1, GL_FALSE, glm::value_ptr(mat));
 }
+void SetShaderVec3(GLuint shaderProgram, GLchar * vec3Name,GLfloat v0, GLfloat v1, GLfloat v2)
+{
+	GLint lFormLoc = glGetUniformLocation(shaderProgram, vec3Name);
+	glUniform3f(lFormLoc,v0,v1,v2);
+}
+
 
 GLFWwindow* SetUpOpenGLWnd(const char * pszWinTitle, int iWidth, int iHeight)
 {
