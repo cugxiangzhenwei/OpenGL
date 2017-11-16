@@ -16,6 +16,10 @@ static float g_fV = 0.5;
 static float g_fAnle = 25.0;
 #define  M_PI  3.1415926
 
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
@@ -245,6 +249,20 @@ void SetShaderMat(GLuint shaderProgram,const GLchar * matName,const glm::mat4 & 
 	GLint matlFormLoc = glGetUniformLocation(shaderProgram, matName);
 	glUniformMatrix4fv(matlFormLoc, 1, GL_FALSE, glm::value_ptr(mat));
 }
+float deltaTime = 0.0f; // 当前帧与上一帧的时间差
+float lastFrame = 0.0f; // 上一帧的时间
+void processInput(GLFWwindow *window)
+{
+	float cameraSpeed = 3.5f * deltaTime; // 移动速度乘以上次绘制所需的时间，使得移动速度均匀
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cameraPos += cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cameraPos -= cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+}
 int main()
 {
 	glfwInit();
@@ -403,8 +421,21 @@ int main()
 		model = glm::rotate(model, (float)glfwGetTime()* glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));*/
 
 		// 注意，我们将矩阵向我们要进行移动场景的反方向移动。
+		/*glm::mat4 view;
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));*/
+
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		processInput(window);
+
 		glm::mat4 view;
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		/*float radius = 10.0f;
+		float camX = sin(glfwGetTime()) * radius;
+		float camZ = cos(glfwGetTime()) * radius;
+		glm::mat4 view;
+		view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));*/
 
 		//透视投影
 		glm::mat4 projection;
