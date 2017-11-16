@@ -263,6 +263,50 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
+float lastX = 400, lastY = 300;
+float yaw = 0.0, pitch = 0.0;
+bool firstMouse = true;
+void mousemove_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		firstMouse = false;
+		lastX = xpos;
+		lastY = ypos;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // 注意这里是相反的，因为y坐标是从底部往顶部依次增大的
+	lastX = xpos;
+	lastY = ypos;
+	float sensitivity = 0.03f; //灵敏度
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset; //偏航角
+	pitch += yoffset; //俯仰角
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+	front.y = sin(glm::radians(pitch));
+	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+	cameraFront = glm::normalize(front);
+
+}
+float fov = 45.0;
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	if (fov >= 1.0f && fov <= 45.0f)
+		fov -= yoffset;
+	if (fov <= 1.0f)
+		fov = 1.0f;
+	if (fov >= 45.0f)
+		fov = 45.0f;
+}
 int main()
 {
 	glfwInit();
@@ -289,7 +333,9 @@ int main()
 	glViewport(0, 0, width, height);
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouse_event_callback);
-
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mousemove_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// 0. 复制顶点数组到缓冲中供OpenGL使用
 	GLuint VBO[5];
@@ -439,7 +485,8 @@ int main()
 
 		//透视投影
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), width*1.0f / height, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
+		//projection = glm::perspective(glm::radians(45.0f), width*1.0f / height, 0.1f, 100.0f);
 
 		SetShaderMat(shaderProgram, "view",view);
 		SetShaderMat(shaderProgram, "projection", projection);
