@@ -29,15 +29,24 @@
     <ClInclude Include="CommonFunc.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="shader_m.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.frag">
+    <None Include="basic_lighting.fs">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="shader.vs">
+    <None Include="basic_lighting.vs">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="light.frag">
+    <None Include="lamp.vs">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="lamp.fs">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

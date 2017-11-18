@@ -156,13 +156,16 @@
     <ClCompile Include="light.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="CommonFunc.h" />
     <ClInclude Include="cubic_vertex_data.h" />
+    <ClInclude Include="shader_m.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="light.frag" />
-    <None Include="shader.frag" />
-    <None Include="shader.vs" />
+    <None Include="basic_lighting.fs" />
+    <None Include="basic_lighting.vs" />
+    <None Include="lamp.vs" />
+    <None Include="lamp.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

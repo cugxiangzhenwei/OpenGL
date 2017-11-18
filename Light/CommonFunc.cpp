@@ -48,6 +48,11 @@ void SetShaderVec3(GLuint shaderProgram, GLchar * vec3Name,GLfloat v0, GLfloat v
 	GLint lFormLoc = glGetUniformLocation(shaderProgram, vec3Name);
 	glUniform3f(lFormLoc,v0,v1,v2);
 }
+void SetShaderVec3(GLuint shaderProgram, GLchar * vec3Name, const glm::vec3 &value)
+{
+	GLint lFormLoc = glGetUniformLocation(shaderProgram, vec3Name);
+	glUniform3fv(lFormLoc, 1, &value[0]);
+}
 
 
 GLFWwindow* SetUpOpenGLWnd(const char * pszWinTitle, int iWidth, int iHeight)
