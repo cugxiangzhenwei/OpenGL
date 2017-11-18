@@ -76,7 +76,5 @@ GLFWwindow* SetUpOpenGLWnd(const char * pszWinTitle, int iWidth, int iHeight)
 		std::cout << "Failed to initialize GLEW" << std::endl;
 		return NULL;
 	}
-	glfwGetFramebufferSize(window, &iWidth, &iHeight);
-	glViewport(0, 0, iWidth, iHeight);
 	return window;
 }
