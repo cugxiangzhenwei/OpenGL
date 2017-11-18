@@ -48,7 +48,7 @@ int main(int, char *[])
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	Shader cubicShader("basic_lighting.vs","basic_lighting.fs");
+	Shader lightingShader("basic_lighting.vs","basic_lighting.fs");
 	Shader lampShader("lamp.vs","lamp.fs");
 
 	GLuint VAO,VBO,lightVAO;
@@ -100,12 +100,13 @@ int main(int, char *[])
 		glm::mat4 view = camera.GetViewMatrix();
 
 
-		cubicShader.use();
-		cubicShader.setMat4("model", model);
-		cubicShader.setMat4("view", view);
-		cubicShader.setMat4("projection", projection);
-		cubicShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		cubicShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.use();
+		lightingShader.setMat4("model", model);
+		lightingShader.setMat4("view", view);
+		lightingShader.setMat4("projection", projection);
+		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("viewPos", camera.Position);
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
