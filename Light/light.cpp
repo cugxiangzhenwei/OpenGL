@@ -84,9 +84,13 @@ int main(int, char *[])
 
 
 	GLuint diffuseMap = loadTexture("container2.png");
+	GLuint specularMap = loadTexture("container2_specular.png");
+
 
 	lightingShader.use();
 	lightingShader.setInt("material.diffuse", 0);
+	lightingShader.setInt("material.specular", 1);
+
 
 
 	// render loop
@@ -139,6 +143,9 @@ int main(int, char *[])
 		// bind diffuse map
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		// render the cube
 		glBindVertexArray(cubeVAO);
